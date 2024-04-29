@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/todo/{todo}/incomplete', [TodoController::class, 'uncomplete'])->name('todo.uncomplete');
     Route::delete('/todo/{todo}', [TodoController::class, 'destroy'])->name('todo.destroy');
     Route::delete('/todo', [TodoController::class, 'destroyCompleted'])->name('todo.deleteallcompleted');
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+
 });
 Route::middleware('admin')->group(function () {
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
