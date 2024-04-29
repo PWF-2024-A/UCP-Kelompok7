@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    
 
 });
 Route::middleware('admin')->group(function () {
