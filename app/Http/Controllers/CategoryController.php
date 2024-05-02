@@ -7,26 +7,17 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Menampilkan daftar semua kategori.
-     */
     public function index()
     {
-        $categories = Category::all(); // Mengambil semua kategori
-        return view('categories.index', compact('categories')); // Mengarahkan ke view categories.index
+        $categories = Category::all();
+        return view('category.index', compact('categories'));
     }
 
-    /**
-     * Menampilkan formulir untuk membuat kategori baru.
-     */
     public function create()
     {
-        return view('categories.create');
+        return view('category.create');
     }
 
-    /**
-     * Menyimpan kategori baru ke database.
-     */
     public function store(Request $request)
     {
         // Validasi input
@@ -34,33 +25,27 @@ class CategoryController extends Controller
             'title' => 'required|max:255',
         ]);
 
-        // Membuat kategori baru
+        // Membuat kategori baru dengan menambahkan user_id dari pengguna yang sedang login
         Category::create([
             'title' => ucfirst($request->title),
+            'user_id' => auth()->user()->id,
         ]);
 
+        // Redirect ke halaman index kategori dengan pesan sukses
         return redirect()->route('category.index')->with('success', 'Category created successfully!');
     }
 
-    /**
-     * Menampilkan formulir untuk mengedit kategori.
-     */
     public function edit(Category $category)
     {
-        return view('categories.edit', compact('category'));
+        return view('category.edit', compact('category'));
     }
 
-    /**
-     * Memperbarui kategori yang ada.
-     */
     public function update(Request $request, Category $category)
     {
-        // Validasi input
         $request->validate([
             'title' => 'required|max:255',
         ]);
 
-        // Memperbarui kategori
         $category->update([
             'title' => ucfirst($request->title),
         ]);
@@ -68,15 +53,13 @@ class CategoryController extends Controller
         return redirect()->route('category.index')->with('success', 'Category updated successfully!');
     }
 
-    /**
-     * Menghapus kategori.
-     */
     public function destroy(Category $category)
     {
-        // Hapus kategori
-        $category->delete();
-
-        return redirect()->route('category.index')->with('success', 'Category deleted successfully!');
+        if (auth()->user()->id == $category->user_id) {
+            $category->delete();
+            return redirect()->route('category.index')->with('success', 'Category deleted successfully!');
+        } else {
+            return redirect()->route('category.index')->with('danger', 'You are not authorized to delete this category!');
+        }
     }
 }
-
