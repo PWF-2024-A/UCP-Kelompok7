@@ -11,11 +11,11 @@ class Todo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'user_id', 'is_complete'
+        'title', 'category_id', 'is_complete'
     ];
 
-    public function user(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Category::class);
     }
 }
