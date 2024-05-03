@@ -56,7 +56,7 @@
                                             class="hover:underline">{{ $todo->title }}</a>
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $todo->category ? $todo->category->title : 'No Category' }}
+                                        {{ $todo->category ? $todo->category->title : '' }}
                                     </td>
                                     <td class="hidden px-6 py-4 md:block">
                                         @if ($todo->is_complete == false)
