@@ -40,7 +40,7 @@ class TodoController extends Controller
     {
         $request->validate([
             'title' => 'required|max:255',
-            'category_id' => 'required|exists:categories,id',
+            // 'category_id' => 'required|exists:categories,id',
         ]);
 
         $todo = Todo::create([
